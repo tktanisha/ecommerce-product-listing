@@ -1,0 +1,24 @@
+@use "mixins.scss" as *;
+
+.no-results {
+  height: calc(100vh - var(--header-height));
+  @include flex(
+    $direction: column,
+    $align: center,
+    $justify: center,
+    $gap: 12px
+  );
+  text-align: center;
+  width: 100%;
+
+  .no-results-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+  }
+
+  .no-results-text {
+    @include typography(var(--font-primary), 18px, 500, 1.2);
+    color: var(--text-primary);
+  }
+}

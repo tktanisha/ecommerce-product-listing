@@ -1,0 +1,16 @@
+@use 'mixins.scss' as *;
+
+.price-slider-container {
+    @include flex($direction: column, $gap: 12px);
+    margin-top: 20px;
+}
+
+.price-heading {
+  @include typography(var(--font-primary), 16px, 600, 100%);
+}
+
+.price-label {
+  @include typography(var(--font-primary), 14px, 400, 100%);
+  @include flex($justify: space-between);
+  margin-bottom: 10px;
+}

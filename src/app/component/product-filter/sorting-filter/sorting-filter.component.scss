@@ -1,0 +1,9 @@
+@use 'mixins.scss' as *;
+
+.sort-by-filter {
+    @include flex($align: center, $gap: 12px);
+}
+
+.sort-by-label {
+    @include typography(var(--font-primary), 14px, 600, 100%);
+}

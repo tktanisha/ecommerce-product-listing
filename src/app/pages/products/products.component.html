@@ -1,0 +1,66 @@
+<div class="products-page">
+  <div class="right-filters">
+    <app-price-slider
+      [minPrice]="minPrice"
+      [maxPrice]="maxPrice"
+      [resetFilters]="resetFilters"
+      (priceRangeChange)="onPriceRangeChange($event)"
+    >
+    </app-price-slider>
+
+    <app-category-filter
+      [resetFilters]="resetFilters"
+      [initialSelectedCategory]="selectedCategory"
+      (categorySelected)="onCategoryChange($event)"
+    >
+    </app-category-filter>
+  </div>
+
+  <div class="products-section">
+    <div *ngIf="loading" class="loading">
+      <app-product-shimmer></app-product-shimmer>
+    </div>
+
+    <div class="product-header">
+      <app-sorting-filter
+        [resetFilters]="resetFilters"
+        [initialSortOrder]="filters.order"
+        (sortChange)="onSortChange($event)"
+      >
+      </app-sorting-filter>
+
+      <!-- <button
+          pButton
+          type="button"
+          class="p-button-sm p-button-rounded p-button-outlined p-button-danger"
+          icon="pi pi-filter-slash"
+          label="Clear Filters"
+          [disabled]="clearButtonDisabled"
+          (click)="clearFilters()">
+        </button> -->
+    </div>
+
+    <div *ngIf="!loading && !error && products.length === 0" class="no-results">
+      <img
+        class="no-results-image"
+        src="https://media.geeksforgeeks.org/auth-dashboard-uploads/not_found.svg"
+        alt="No Products Found"
+      />
+      <p class="no-results-text">No products found</p>
+    </div>
+
+    @if(!loading && !error && products.length > 0){
+    <div class="products-grid">
+      <app-product-card *ngFor="let product of products" [product]="product">
+      </app-product-card>
+    </div>
+
+    <app-pagination
+      [totalProducts]="totalProducts"
+      [shownProducts]="products.length"
+      (loadMore)="onLoadMoreProducts()"
+    >
+    </app-pagination>
+    }
+  </div>
+</div>

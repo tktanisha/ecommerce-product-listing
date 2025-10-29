@@ -1,0 +1,28 @@
+@use 'mixins.scss' as *;
+.category-filter {
+    @include flex($direction: column, $gap: 12px);
+}
+
+.category-title {
+    @include typography(var(--font-primary), 16px, 600, 100%);
+}
+
+.category-options {
+    @include flex($direction: column, $gap: 6px);
+}
+
+.category-option {
+    @include flex($align: center, $gap: 8px);
+    @include typography(var(--font-primary), 14px, 400, 100%);
+    
+    input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        accent-color: var(--accent-color);
+    }
+
+    label {
+        cursor: pointer;
+    }
+}

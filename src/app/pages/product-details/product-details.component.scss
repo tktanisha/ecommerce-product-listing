@@ -1,0 +1,110 @@
+@use "mixins" as *;
+
+.product-details-container {
+  position: relative;
+  padding: 20px;
+
+  .back-btn {
+    top: 40px;
+    left: 40px;
+    margin-bottom: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: #357960b0;
+    outline: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--accent-hover-color);
+    }
+  }
+
+  .details-layout {
+    
+    @include flex($justify: space-between);
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 500px;
+
+    .image-wrapper {
+      width: 50%;
+      overflow: hidden;
+      border-right: 1px solid var(--border-secondary);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .product-info {
+      padding: 20px;
+      width: 50%;
+      overflow: auto;
+      @include flex($direction: column, $justify: space-between);
+
+      .info-text {
+        @include flex($direction: column, $align: flex-start, $gap: 15px);
+      }
+
+      .title {
+        @include typography(var(--font-primary), 24px, 600, 1.4);
+        color: var(--text-primary);
+      }
+
+      .price {
+        @include typography(var(--font-secondary), 34px, 700, 1.2);
+        color: var(--accent-color);
+        margin: 5px 0 10px 0;
+      }
+
+      .category {
+        padding: 8px 10px;
+        @include typography(var(--font-secondary), 14px, 500, 1);
+        background: var(--icon-bg);
+        border-radius: 30px;
+        color: var(--accent-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .description {
+        @include typography(var(--font-primary), 15px, 400, 1.4);
+        color: var(--text-secondary);
+        max-width: 90%;
+      }
+
+      .add-to-cart {
+        @include buttonStyle(var(--accent-color), #fff, 14px 0, 6px);
+        width: 100%;
+        margin-top: 20px;
+        cursor: not-allowed;
+
+        @include typography(var(--font-primary), 16px, 600, 1.2);
+        &:hover {
+          background-color: var(--accent-hover-color);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .details-layout {
+    @include flex(column, center, center, 20px);
+
+    .image-wrapper,
+    .product-info {
+      width: 100%;
+    }
+
+    .image-wrapper {
+      height: 350px;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@mixin flex($direction: null, $align: null, $justify: null, $gap: 0) {
+  display: flex;
+  @if $direction != null {
+    flex-direction: $direction;
+  }
+  @if $align != null {
+    align-items: $align;
+  }
+  @if $justify != null {
+    justify-content: $justify;
+  }
+  gap: $gap;
+}
+
+@mixin typography(
+  $font-family,
+  $font-size,
+  $font-weight,
+  $line-height,
+  $letter-spacing: normal
+) {
+  font-family: $font-family;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+}
+
+@mixin buttonStyle($bg, $color: #fff, $padding: 10px 20px, $radius: 8px) {
+  background-color: $bg;
+  color: $color;
+  padding: $padding;
+  border: none;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}

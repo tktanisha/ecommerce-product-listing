@@ -1,0 +1,12 @@
+<div class="pagination-container">
+  <p class="pagination-info">
+    Showing <strong>{{ shownProducts }}</strong> of
+    <strong>{{ totalProducts }}</strong> products
+  </p>
+
+  <ng-container *ngIf="shownProducts < totalProducts">
+    <button type="button" class="load-more-button" (click)="onLoadMore()">
+      Load More
+    </button>
+  </ng-container>
+</div>

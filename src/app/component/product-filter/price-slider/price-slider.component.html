@@ -1,0 +1,18 @@
+<div class="price-slider-container">
+  <p class="price-heading">Price Range</p>
+  <div>
+    <label class="price-label"
+      ><span>${{ rangeValues[0] }}</span
+      ><span>${{ rangeValues[1] }}</span></label
+    >
+    <p-slider
+      [(ngModel)]="rangeValues"
+      [range]="true"
+      [min]="minPrice"
+      [max]="maxPrice"
+      styleClass="w-56"
+      (onChange)="onPriceChange()"
+      [step]="5"
+    ></p-slider>
+  </div>
+</div>

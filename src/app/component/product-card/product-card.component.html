@@ -1,0 +1,29 @@
+<div class="product-card" (click)="viewDetails()">
+  <div class="product-image-container">
+    <img
+      [src]="product.thumbnail"
+      [alt]="product.title"
+      class="product-image"
+    />
+
+    <span class="category-badge">
+      {{ product.category[0].toUpperCase() + product.category.slice(1) }}
+    </span>
+  </div>
+
+  <div class="product-info">
+    <h3 class="product-name">
+      {{ product.title }}
+    </h3>
+
+    <p class="product-description">
+      {{ product.description }}
+    </p>
+
+    <div class="product-details-row">
+      <div class="product-price">$ {{ product.price }}</div>
+
+      <button class="view-btn" (click)="viewDetails()">View</button>
+    </div>
+  </div>
+</div>
