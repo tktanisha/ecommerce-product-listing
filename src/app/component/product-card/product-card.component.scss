@@ -63,12 +63,11 @@
 
 .product-details-row {
   @include flex(row, center, space-between);
-//   border-top: 1px solid var(--border-color);
   padding-top: 10px;
 
   .view-btn {
     background-color: var(--accent-color);
-    color: white;
+    color: #fff;
     border: none;
     padding: 8px 16px;
     border-radius: 4px;

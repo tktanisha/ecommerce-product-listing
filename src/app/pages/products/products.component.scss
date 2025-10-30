@@ -1,57 +1,61 @@
-@use 'mixins.scss' as *;
+@use "mixins.scss" as *;
 
 .products-page {
-    @include flex($gap: 12px);
+  @include flex($gap: 12px);
 }
 
 .right-filters {
-    position: fixed;
-    width: var(--filter-sidebar-width);
-    padding: 16px 20px;
-    background: var(--card-bg);
-    @include flex($direction: column, $gap: 30px);
-    border-right: 1px solid var(--border-color);
-    height: 100%;
-    z-index: 999;
+  position: fixed;
+  width: var(--filter-sidebar-width);
+  padding: 16px 20px;
+  background: var(--card-bg);
+  @include flex($direction: column, $gap: 30px);
+  border-right: 1px solid var(--border-color);
+  height: 100%;
+  z-index: 999;
 }
 
 .products-section {
-    padding: 16px 20px;
-    padding-left: calc(var(--filter-sidebar-width) + 32px);
-    position: relative;
+  padding: 16px 20px;
+  padding-left: calc(var(--filter-sidebar-width) + 32px);
+  position: relative;
+  width: 100%;
+
+  .product-header {
+    @include flex($align: center, $justify: space-between, $gap: 12px);
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .no-results {
+    @include flex(
+      $direction: column,
+      $align: center,
+      $justify: center,
+      $gap: 12px
+    );
+    text-align: center;
+    height: 100%;
     width: 100%;
+    margin-top: 80px;
 
-    .product-header {
-        @include flex($align: center, $justify: space-between, $gap: 12px);
-        flex-wrap: wrap;
-        margin-bottom: 12px;
+    .no-results-image {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
     }
 
-    .no-results {
-        @include flex($direction: column, $align: center, $justify: center, $gap: 12px);
-        text-align: center;
-        height: 100%;
-        width: 100%;
-        margin-top: 80px;
-
-        .no-results-image {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-        }
-
-        .no-results-text {
-            @include typography(var(--font-primary), 18px, 500, 1.2);
-            color: var(--text-primary);
-        }
+    .no-results-text {
+      @include typography(var(--font-primary), 18px, 500, 1.2);
+      color: var(--text-primary);
     }
+  }
 }
 
-
 .products-grid {
-    display: grid;
-    gap: 16px;
-    grid-template-columns: repeat(3, minmax(300px, 1fr));
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
 }
 
 @media (max-width: 1224px) {

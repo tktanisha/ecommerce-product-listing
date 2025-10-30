@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./sorting-filter.component.scss'],
 })
 export class SortingFilterComponent {
-  @Input() resetFilters: boolean = false;
   @Output() sortChange = new EventEmitter<'asc' | 'desc'>();
   @Input() initialSortOrder: 'asc' | 'desc' | null | undefined = null;
 
@@ -20,12 +19,9 @@ export class SortingFilterComponent {
     { label: 'Price: Low to High', value: 'asc' },
     { label: 'Price: High to Low', value: 'desc' },
   ];
+
   //TODO
   ngOnChanges(): void {
-    if (this.resetFilters) {
-      this.selectedSort = '';
-    }
-
     if (this.initialSortOrder) {
       this.selectedSort = this.initialSortOrder;
     }

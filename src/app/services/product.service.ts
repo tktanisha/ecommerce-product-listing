@@ -23,7 +23,6 @@ export class ProductService {
       });
     }
 
-    //TODO--aarray
     return this.http.get<ProductsResponse>(`${this.baseUrl}`, { params });
   }
 

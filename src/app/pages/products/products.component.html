@@ -3,13 +3,11 @@
     <app-price-slider
       [minPrice]="minPrice"
       [maxPrice]="maxPrice"
-      [resetFilters]="resetFilters"
       (priceRangeChange)="onPriceRangeChange($event)"
     >
     </app-price-slider>
 
     <app-category-filter
-      [resetFilters]="resetFilters"
       [initialSelectedCategory]="selectedCategory"
       (categorySelected)="onCategoryChange($event)"
     >
@@ -23,21 +21,10 @@
 
     <div class="product-header">
       <app-sorting-filter
-        [resetFilters]="resetFilters"
         [initialSortOrder]="filters.order"
         (sortChange)="onSortChange($event)"
       >
       </app-sorting-filter>
-
-      <!-- <button
-          pButton
-          type="button"
-          class="p-button-sm p-button-rounded p-button-outlined p-button-danger"
-          icon="pi pi-filter-slash"
-          label="Clear Filters"
-          [disabled]="clearButtonDisabled"
-          (click)="clearFilters()">
-        </button> -->
     </div>
 
     <div *ngIf="!loading && !error && products.length === 0" class="no-results">

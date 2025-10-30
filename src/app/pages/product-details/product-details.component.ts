@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../services/product.service';
+import { Component, OnInit } from '@angular/core';
+
+import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
 import { Product } from '../../models/product.model';
+import { ProductService } from '../../services/product.service';
+
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CapitalizePipe],
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss'],
 })

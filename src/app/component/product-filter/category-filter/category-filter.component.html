@@ -10,9 +10,7 @@
         [(ngModel)]="selectedCategory"
         (change)="onCategoryChange(category)"
       />
-      <label for="{{ category }}">{{
-        category.charAt(0).toUpperCase() + category.slice(1)
-      }}</label>
+      <label for="{{ category }}">{{ category | capitalize }}</label>
     </div>
   </div>
 </div>

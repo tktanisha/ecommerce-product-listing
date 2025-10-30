@@ -13,8 +13,7 @@
         <h2 class="title">{{ product.title }}</h2>
         <p class="description">{{ product.description }}</p>
         <p class="category">
-          <!--use pipe here custom-->
-          <span>{{ product.category.toUpperCase() }}</span>
+          <span>{{ product.category | capitalize }}</span>
         </p>
         <p class="price">${{ product.price }}</p>
       </div>

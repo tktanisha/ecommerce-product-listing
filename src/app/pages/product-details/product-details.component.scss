@@ -23,7 +23,6 @@
   }
 
   .details-layout {
-    
     @include flex($justify: space-between);
     background-color: var(--card-bg);
     border-radius: 12px;

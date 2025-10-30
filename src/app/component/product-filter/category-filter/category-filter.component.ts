@@ -1,26 +1,26 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
-  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
+  inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ProductService } from '../../../services/product.service';
+import { CapitalizePipe } from '../../../shared/pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-category-filter',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CapitalizePipe],
   templateUrl: './category-filter.component.html',
   styleUrls: ['./category-filter.component.scss'],
 })
 export class CategoryFilterComponent implements OnInit, OnChanges {
-  @Input() resetFilters: boolean = false;
   @Input() initialSelectedCategory: string | null = null;
   @Output() categorySelected = new EventEmitter<string>();
 
@@ -35,7 +35,6 @@ export class CategoryFilterComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.resetFilters) this.selectedCategory = null;
     if (this.initialSelectedCategory !== null) {
       this.selectedCategory = this.initialSelectedCategory;
     }

@@ -44,10 +44,8 @@ export class ProductsComponent implements OnInit {
   minPrice = 0;
   maxPrice = 0;
 
-  clearButtonDisabled = true;
   loading = true;
   selectedCategory: string | null = null;
-  resetFilters = false;
 
   products: Product[] = [];
   allProducts: Product[] = [];
@@ -92,7 +90,10 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.loading = true;
+    // shimmer on inital load only
+    if (this.filters.skip === 0) {
+      this.loading = true;
+    }
 
     (this.selectedCategory
       ? this.productService.getProductsByCategory(
@@ -106,7 +107,7 @@ export class ProductsComponent implements OnInit {
           this.allProducts = [];
         }
 
-        this.allProducts = [...this.allProducts, ...response.products];
+        this.allProducts.push(...response.products);
         this.products = [...this.allProducts];
         this.totalProducts = response.total;
         this.updatePriceRange(this.products);
@@ -131,7 +132,6 @@ export class ProductsComponent implements OnInit {
 
   onCategoryChange(category: string): void {
     this.selectedCategory = category;
-    this.clearButtonDisabled = false;
     this.resetSkip();
 
     this.updateQueryParams();
@@ -141,32 +141,15 @@ export class ProductsComponent implements OnInit {
     this.products = this.allProducts.filter(
       (p) => p.price >= range.min && p.price <= range.max
     );
-    this.clearButtonDisabled = false;
   }
 
   onSortChange(order: 'asc' | 'desc'): void {
     this.filters.order = order;
     this.filters.sortBy = 'price';
-    this.clearButtonDisabled = false;
 
     this.resetSkip();
     this.updateQueryParams();
   }
-
-  // clearFilters(): void {
-  //   this.selectedCategory = null;
-  //   this.resetFilters = true;
-
-  //   this.filters = {
-  //     limit: 9,
-  //     skip: 0,
-  //     sortBy: null,
-  //     order: null,
-  //   };
-
-  //   this.clearButtonDisabled = true;
-  //   this.updateQueryParams();
-  // }
 
   private resetSkip(): void {
     this.filters.skip = 0;
