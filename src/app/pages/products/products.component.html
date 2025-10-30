@@ -27,7 +27,10 @@
       </app-sorting-filter>
     </div>
 
-    <div *ngIf="!loading && !error && products.length === 0" class="no-results">
+    <div
+      *ngIf="!loading && !error && products?.length === 0"
+      class="no-results"
+    >
       <img
         class="no-results-image"
         src="https://media.geeksforgeeks.org/auth-dashboard-uploads/not_found.svg"

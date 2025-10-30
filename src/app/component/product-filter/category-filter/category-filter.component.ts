@@ -26,7 +26,7 @@ export class CategoryFilterComponent implements OnInit, OnChanges {
 
   categories: string[] = [];
   selectedCategory: string | null = null;
-  loading = true;
+  loading: boolean = true;
 
   productService: ProductService = inject(ProductService);
 
@@ -35,7 +35,10 @@ export class CategoryFilterComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.initialSelectedCategory !== null) {
+    if (
+      this.initialSelectedCategory !== null ||
+      this.initialSelectedCategory === null
+    ) {
       this.selectedCategory = this.initialSelectedCategory;
     }
   }

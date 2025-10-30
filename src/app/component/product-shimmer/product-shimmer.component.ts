@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './product-shimmer.component.scss',
 })
 export class ProductShimmerComponent {
-  shimmerCards = Array(9); //to see
+  shimmerCards = Array(9); //to see 9 cards
 }

@@ -6,11 +6,11 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss'],
+  styleUrl: './pagination.component.scss',
 })
 export class PaginationComponent {
-  @Input() totalProducts = 0;
-  @Input() shownProducts = 0;
+  @Input() totalProducts: number = 0;
+  @Input() shownProducts: number = 0;
 
   @Output() loadMore = new EventEmitter<void>();
 

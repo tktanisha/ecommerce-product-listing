@@ -1,17 +1,21 @@
-@use 'mixins.scss' as *;
+@use "mixins.scss" as *;
 
 .pagination-container {
-    padding: 16px;
-    @include flex($direction: column, $justify: center, $align: center, $gap: 12px);
+  padding: 16px;
+  @include flex(
+    $direction: column,
+    $justify: center,
+    $align: center,
+    $gap: 12px
+  );
 }
 
 .load-more-button {
-    @include buttonStyle(transparent, var(--accent-color), 8px 16px, 4px);
-    border: 1px solid var(--accent-color);
-    transition: background-color 0.3s, color 0.3s;
-    &:hover:not(:disabled) {
-        background-color: var(--accent-color);
-        color: #fff;
-    }
+  @include buttonStyle(transparent, var(--accent-color), 8px 16px, 4px);
+  border: 1px solid var(--accent-color);
+  transition: background-color 0.3s, color 0.3s;
+  &:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+  }
 }
-

@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
@@ -8,19 +14,19 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, DropdownModule, FormsModule],
   templateUrl: './sorting-filter.component.html',
-  styleUrls: ['./sorting-filter.component.scss'],
+  styleUrl: './sorting-filter.component.scss',
 })
-export class SortingFilterComponent {
+export class SortingFilterComponent implements OnChanges {
   @Output() sortChange = new EventEmitter<'asc' | 'desc'>();
   @Input() initialSortOrder: 'asc' | 'desc' | null | undefined = null;
 
   selectedSort: string = '';
+
   sortOptions = [
     { label: 'Price: Low to High', value: 'asc' },
     { label: 'Price: High to Low', value: 'desc' },
   ];
 
-  //TODO
   ngOnChanges(): void {
     if (this.initialSortOrder) {
       this.selectedSort = this.initialSortOrder;

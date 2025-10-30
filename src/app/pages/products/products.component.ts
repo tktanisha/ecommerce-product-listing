@@ -17,6 +17,12 @@ import { ProductsResponse } from '../../models/products-response.model';
 
 import { ProductService } from '../../services/product.service';
 
+type QueryParams = {
+  sortBy?: 'price' | null;
+  order?: 'asc' | 'desc' | null;
+  category?: string | null;
+};
+
 @Component({
   selector: 'app-products',
   standalone: true,
@@ -31,21 +37,21 @@ import { ProductService } from '../../services/product.service';
     ButtonModule,
   ],
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss'],
+  styleUrl: './products.component.scss',
 })
 export class ProductsComponent implements OnInit {
   productService: ProductService = inject(ProductService);
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
 
-  error = '';
+  totalProducts: number = 0;
+  minPrice: number = 0;
+  maxPrice: number = 0;
 
-  totalProducts = 0;
-  minPrice = 0;
-  maxPrice = 0;
-
-  loading = true;
   selectedCategory: string | null = null;
+  error: string = '';
+
+  loading: boolean = true;
 
   products: Product[] = [];
   allProducts: Product[] = [];
@@ -57,15 +63,12 @@ export class ProductsComponent implements OnInit {
     order: null,
   };
 
-  // Why it's different: The snapshot provides a static, one-time read of the route's parameters. If a user changes query parameters while staying on the same component (e.g., by clicking a filter), the component will not be notified of the change and will not update. This would break your filter functionality.
-  // When to use it: This approach is suitable for cases where you only need the initial values of the query parameters and don't expect them to change while the component is active.
   ngOnInit(): void {
-    // The code subscribes to the queryParams observable, which is a stream of values representing the query parameters in the URL (e.g., ?category=electronics&order=asc). The code inside the subscription block will execute every time the query parameters change.
     this.route.queryParams.subscribe((params) => {
       this.filters = {
         limit: 9,
         skip: 0,
-        sortBy: params['sortBy'] ? 'price' : null, //params['sortBy'] ? 'price' : null: This line checks if the sortBy query parameter exists. If it does, it explicitly sets filters.sortBy to 'price'. This is likely because the sorting logic in the onSortChange method only handles price-based sorting
+        sortBy: params['sortBy'] ? 'price' : null,
         order: params['order'] || null,
       };
 
@@ -75,8 +78,8 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  private updateQueryParams(): void {
-    const params: any = {};
+  updateQueryParams(): void {
+    const params: QueryParams = {};
 
     if (this.filters.sortBy) params.sortBy = this.filters.sortBy;
     if (this.filters.order) params.order = this.filters.order;
@@ -85,12 +88,13 @@ export class ProductsComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: params,
-      queryParamsHandling: 'merge',
+      queryParamsHandling: 'merge', //merge the new query parameters with the existing ones
+      replaceUrl: true, //not adding the history on every url query change
     });
   }
 
   loadProducts(): void {
-    // shimmer on inital load only
+    //showing shimmer on inial load
     if (this.filters.skip === 0) {
       this.loading = true;
     }
@@ -112,7 +116,7 @@ export class ProductsComponent implements OnInit {
         this.totalProducts = response.total;
         this.updatePriceRange(this.products);
 
-        if (!this.products.length) {
+        if (!this.products?.length) {
           this.error = 'No products found.';
         }
 
@@ -132,7 +136,7 @@ export class ProductsComponent implements OnInit {
 
   onCategoryChange(category: string): void {
     this.selectedCategory = category;
-    this.resetSkip();
+    //this.resetSkip();
 
     this.updateQueryParams();
   }
@@ -147,20 +151,20 @@ export class ProductsComponent implements OnInit {
     this.filters.order = order;
     this.filters.sortBy = 'price';
 
-    this.resetSkip();
+    //this.resetSkip();
     this.updateQueryParams();
   }
 
-  private resetSkip(): void {
-    this.filters.skip = 0;
-  }
+  // resetSkip(): void {
+  //   this.filters.skip = 0;
+  // }
 
-  private updatePriceRange(products: Product[]): void {
-    if (!products.length) {
+  updatePriceRange(products: Product[]): void {
+    if (!products?.length) {
       return;
     }
 
-    const prices = products.map((p) => p.price);
+    const prices = products.map((product) => product.price);
     this.minPrice = Math.floor(Math.min(...prices));
     this.maxPrice = Math.ceil(Math.max(...prices));
   }

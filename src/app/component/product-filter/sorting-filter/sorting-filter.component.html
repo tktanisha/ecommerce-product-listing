@@ -2,10 +2,8 @@
   <label class="sort-by-label">Sort By:</label>
   <p-dropdown
     [options]="sortOptions"
-    [ngModel]="selectedSort"
-    placeholder="Select Sort Order"
     (onChange)="onSortChange($event)"
+    placeholder="Select Sort Order"
     styleClass="w-56"
-    [itemSize]="10"
   ></p-dropdown>
 </div>
