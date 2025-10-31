@@ -1,0 +1,10 @@
+<div class="sort-by-filter">
+  <label class="sort-by-label">{{ sortLabel }}</label>
+  <p-select
+    [options]="sortOptions"
+    [(ngModel)]="selectedSort"
+    (onChange)="onSortChange($event)"
+    [placeholder]="sortPlaceholder"
+    styleClass="w-56"
+  ></p-select>
+</div>

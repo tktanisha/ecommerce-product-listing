@@ -1,0 +1,20 @@
+<div class="category-filter">
+  <h3 class="category-title">{{ titleText }}</h3>
+
+  @if (!loading) {
+    <div class="category-options">
+      @for (category of categories; track category) {
+        <div class="category-option">
+          <input
+            id="{{ category }}"
+            type="radio"
+            [value]="category"
+            [(ngModel)]="selectedCategory"
+            (change)="onCategoryChange(category)"
+          />
+          <label for="{{ category }}">{{ category | capitalize }}</label>
+        </div>
+      }
+    </div>
+  }
+</div>

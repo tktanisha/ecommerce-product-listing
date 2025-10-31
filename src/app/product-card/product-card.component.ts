@@ -1,8 +1,10 @@
 import { Component, Input, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
-import { Product } from '../../models/product.model';
+import { CapitalizePipe } from '../shared/pipes/capitalize.pipe';
+import { Product } from '../models/product.model';
+
+import { PRODUCT_CARD_CONSTANTS } from '../constants/constants';
 
 @Component({
   selector: 'app-product-card',
@@ -15,7 +17,7 @@ export class ProductCardComponent {
 
   router: Router = inject(Router);
 
-  viewDetails() {
-    this.router.navigate(['/products', this.product.id]);
+  viewDetails(): void {
+    this.router.navigate([PRODUCT_CARD_CONSTANTS.ON_VIEW_ROUTE, this.product.id]);
   }
 }

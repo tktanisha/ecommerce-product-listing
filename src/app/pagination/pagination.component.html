@@ -4,9 +4,9 @@
     <strong>{{ totalProducts }}</strong> products
   </p>
 
-  <ng-container *ngIf="shownProducts < totalProducts">
-    <button type="button" class="load-more-button" (click)="onLoadMore()">
-      Load More
-    </button>
-  </ng-container>
+  @if (shownProducts < totalProducts) {
+  <button type="button" class="load-more-button" (click)="onLoadMore()">
+    Load More
+  </button>
+  }
 </div>

@@ -1,12 +1,11 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { SHIMMER_CARDS_COUNT } from '../constants/constants';
 
 @Component({
   selector: 'app-product-shimmer',
-  imports: [CommonModule],
   templateUrl: './product-shimmer.component.html',
   styleUrl: './product-shimmer.component.scss',
 })
 export class ProductShimmerComponent {
-  shimmerCards = Array(9); //to see 9 cards
+  shimmerCards = Array(SHIMMER_CARDS_COUNT);
 }

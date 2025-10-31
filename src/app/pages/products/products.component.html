@@ -4,53 +4,58 @@
       [minPrice]="minPrice"
       [maxPrice]="maxPrice"
       (priceRangeChange)="onPriceRangeChange($event)"
-    >
-    </app-price-slider>
+    ></app-price-slider>
 
     <app-category-filter
       [initialSelectedCategory]="selectedCategory"
       (categorySelected)="onCategoryChange($event)"
-    >
-    </app-category-filter>
+    ></app-category-filter>
   </div>
 
   <div class="products-section">
-    <div *ngIf="loading" class="loading">
+    @if (loading) {
+    <div class="loading">
       <app-product-shimmer></app-product-shimmer>
     </div>
+    }
 
     <div class="product-header">
       <app-sorting-filter
         [initialSortOrder]="filters.order"
         (sortChange)="onSortChange($event)"
-      >
-      </app-sorting-filter>
+      ></app-sorting-filter>
+
+      <button
+        pButton
+        type="button"
+        label="{{ CONSTANTS.CLEAR_FILTERS_BUTTON }}"
+        icon="pi pi-filter-slash"
+        class="p-button-danger p-button-sm"
+        (click)="clearFilters()"
+      ></button>
     </div>
 
-    <div
-      *ngIf="!loading && !error && products?.length === 0"
-      class="no-results"
-    >
+    @if (!loading && !error && products.length === 0) {
+    <div class="no-results">
       <img
         class="no-results-image"
-        src="https://media.geeksforgeeks.org/auth-dashboard-uploads/not_found.svg"
-        alt="No Products Found"
+        src="{{ CONSTANTS.NO_RESULTS_IMAGE }}"
+        alt="{{ CONSTANTS.NO_RESULTS_ALT }}"
       />
-      <p class="no-results-text">No products found</p>
+      <p class="no-results-text">{{ CONSTANTS.NO_RESULTS_TEXT }}</p>
     </div>
-
-    @if(!loading && !error && products.length > 0){
+    } @if (!loading && !error && products.length > 0) {
     <div class="products-grid">
-      <app-product-card *ngFor="let product of products" [product]="product">
-      </app-product-card>
+      @for (product of products; track product) {
+      <app-product-card [product]="product"></app-product-card>
+      }
     </div>
 
     <app-pagination
       [totalProducts]="totalProducts"
       [shownProducts]="products.length"
       (loadMore)="onLoadMoreProducts()"
-    >
-    </app-pagination>
+    ></app-pagination>
     }
   </div>
 </div>

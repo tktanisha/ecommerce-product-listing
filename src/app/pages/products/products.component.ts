@@ -1,21 +1,26 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+
+import { Subscription } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 
-import { CategoryFilterComponent } from '../../component/product-filter/category-filter/category-filter.component';
-import { PaginationComponent } from '../../component/pagination/pagination.component';
-import { PriceSliderComponent } from '../../component/product-filter/price-slider/price-slider.component';
-import { ProductCardComponent } from '../../component/product-card/product-card.component';
-import { ProductShimmerComponent } from '../../component/product-shimmer/product-shimmer.component';
-import { SortingFilterComponent } from '../../component/product-filter/sorting-filter/sorting-filter.component';
+import { CategoryFilterComponent } from '../../product-filter/category-filter/category-filter.component';
+import { PaginationComponent } from '../../pagination/pagination.component';
+import { PriceSliderComponent } from '../../product-filter/price-slider/price-slider.component';
+import { ProductCardComponent } from '../../product-card/product-card.component';
+import { ProductShimmerComponent } from '../../product-shimmer/product-shimmer.component';
+import { SortingFilterComponent } from '../../product-filter/sorting-filter/sorting-filter.component';
 
 import { Product } from '../../models/product.model';
 import { ProductFilters } from '../../models/productFilter.model';
 import { ProductsResponse } from '../../models/products-response.model';
 
 import { ProductService } from '../../services/product.service';
+import {
+  PRICE_SLIDER_CONSTANTS,
+  PRODUCTS_CONSTANTS,
+} from '../../constants/constants';
 
 type QueryParams = {
   sortBy?: 'price' | null;
@@ -27,7 +32,6 @@ type QueryParams = {
   selector: 'app-products',
   standalone: true,
   imports: [
-    CommonModule,
     ProductCardComponent,
     ProductShimmerComponent,
     SortingFilterComponent,
@@ -39,7 +43,7 @@ type QueryParams = {
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
   productService: ProductService = inject(ProductService);
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
@@ -63,11 +67,17 @@ export class ProductsComponent implements OnInit {
     order: null,
   };
 
+  readonly CONSTANTS = PRODUCTS_CONSTANTS;
+  readonly DEFAULT_MIN_PRICE = PRICE_SLIDER_CONSTANTS.SLIDER_CONFIG.DEFAULT_MIN;
+
+  private routeSub?: Subscription;
+  private productSub?: Subscription;
+
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
+    this.routeSub = this.route.queryParams.subscribe((params): void => {
       this.filters = {
-        limit: 9,
-        skip: 0,
+        limit: this.CONSTANTS.DEFAULT_LIMIT,
+        skip: this.CONSTANTS.DEFAULT_SKIP,
         sortBy: params['sortBy'] ? 'price' : null,
         order: params['order'] || null,
       };
@@ -88,27 +98,28 @@ export class ProductsComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: params,
-      queryParamsHandling: 'merge', //merge the new query parameters with the existing ones
+      queryParamsHandling: 'merge',
       replaceUrl: true, //not adding the history on every url query change
     });
   }
 
   loadProducts(): void {
-    //showing shimmer on inial load
+    //showing shimmer on initial load only
     if (this.filters.skip === 0) {
       this.loading = true;
     }
 
-    (this.selectedCategory
+    const productRequest = this.selectedCategory
       ? this.productService.getProductsByCategory(
           this.selectedCategory,
           this.filters
         )
-      : this.productService.getProducts(this.filters)
-    ).subscribe({
-      next: (response: ProductsResponse) => {
-        if (this.filters.skip === 0) {
-          this.allProducts = [];
+      : this.productService.getProducts(this.filters);
+
+    this.productSub = productRequest.subscribe({
+      next: (response: ProductsResponse): void => {
+        if (this.filters.skip === this.CONSTANTS.DEFAULT_SKIP) {
+          this.allProducts = []; //list get cleared when starting fresh
         }
 
         this.allProducts.push(...response.products);
@@ -116,56 +127,73 @@ export class ProductsComponent implements OnInit {
         this.totalProducts = response.total;
         this.updatePriceRange(this.products);
 
-        if (!this.products?.length) {
-          this.error = 'No products found.';
-        }
-
+        this.error = this.products.length
+          ? ''
+          : this.CONSTANTS.NO_PRODUCTS_FOUND_MSG;
         this.loading = false;
       },
-      error: () => {
+      error: (): void => {
         this.loading = false;
-        this.error = 'Error occurred while fetching products.';
+        this.error = this.CONSTANTS.FETCH_ERROR_MSG;
       },
     });
   }
 
   onLoadMoreProducts(): void {
-    this.filters.skip = (this.filters.skip ?? 0) + (this.filters.limit ?? 9);
+    this.filters.skip =
+      (this.filters.skip ?? this.CONSTANTS.DEFAULT_SKIP) +
+      (this.filters.limit ?? this.CONSTANTS.DEFAULT_LIMIT);
     this.loadProducts();
   }
 
   onCategoryChange(category: string): void {
     this.selectedCategory = category;
-    //this.resetSkip();
-
     this.updateQueryParams();
   }
 
   onPriceRangeChange(range: { min: number; max: number }): void {
     this.products = this.allProducts.filter(
-      (p) => p.price >= range.min && p.price <= range.max
+      (product: Product) =>
+        product.price >= range.min && product.price <= range.max
     );
   }
 
   onSortChange(order: 'asc' | 'desc'): void {
     this.filters.order = order;
     this.filters.sortBy = 'price';
-
-    //this.resetSkip();
     this.updateQueryParams();
   }
 
-  // resetSkip(): void {
-  //   this.filters.skip = 0;
-  // }
-
   updatePriceRange(products: Product[]): void {
-    if (!products?.length) {
-      return;
-    }
+    if (!products?.length) return;
 
-    const prices = products.map((product) => product.price);
+    const prices = products.map((product: Product) => product.price);
     this.minPrice = Math.floor(Math.min(...prices));
     this.maxPrice = Math.ceil(Math.max(...prices));
+  }
+
+  clearFilters(): void {
+    this.filters = {
+      limit: this.CONSTANTS.DEFAULT_LIMIT,
+      skip: this.CONSTANTS.DEFAULT_SKIP,
+      sortBy: null,
+      order: null,
+    };
+
+    this.selectedCategory = null;
+    this.minPrice = this.DEFAULT_MIN_PRICE;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      replaceUrl: true,
+    });
+
+    this.loadProducts();
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
+    this.productSub?.unsubscribe();
   }
 }

@@ -37,30 +37,6 @@
   background: #e4e4e4;
 }
 
-.shimmer-bg::before,
-.shimmer-line::before,
-.shimmer-button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  animation: shimmer 1.6s infinite;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
 .shimmer-line.title {
   height: 18px;
   width: 70%;

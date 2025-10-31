@@ -5,6 +5,6 @@ import { RouterOutlet, RouterLinkWithHref } from '@angular/router';
   selector: 'app-root',
   imports: [RouterOutlet, RouterLinkWithHref],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {}

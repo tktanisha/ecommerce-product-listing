@@ -1,23 +1,28 @@
-<div class="product-details-container" *ngIf="!loading && product">
-  <button class="back-btn" (click)="goBack()">
-    <i class="pi pi-arrow-left"></i>
-  </button>
+@if (!loading && product) {
+  <div class="product-details-container">
+    <button class="back-btn" (click)="goBack()">
+      <i class="pi pi-arrow-left"></i>
+    </button>
 
-  <div class="details-layout">
-    <div class="image-wrapper">
-      <img [src]="product.thumbnail" [alt]="product.title" />
-    </div>
-
-    <div class="product-info">
-      <div class="info-text">
-        <h2 class="title">{{ product.title }}</h2>
-        <p class="description">{{ product.description }}</p>
-        <p class="category">
-          <span>{{ product.category | capitalize }}</span>
-        </p>
-        <p class="price">${{ product.price }}</p>
+    <div class="details-layout">
+      <div class="image-wrapper">
+        <img [src]="product.thumbnail" [alt]="product.title" />
       </div>
-      <button class="add-to-cart">Add to Cart</button>
+
+      <div class="product-info">
+        <div class="info-text">
+          <h2 class="title">{{ product.title }}</h2>
+          <p class="description">{{ product.description }}</p>
+          <p class="category">
+            <span>{{ product.category | capitalize }}</span>
+          </p>
+          <p class="price">${{ product.price }}</p>
+        </div>
+
+        <button class="add-to-cart">
+          {{ constants.UI_TEXT.ADD_TO_CART_BUTTON }}
+        </button>
+      </div>
     </div>
   </div>
-</div>
+}
